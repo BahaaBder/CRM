@@ -1,0 +1,43 @@
+.dividingLine {
+  height: 33px;
+  border-bottom: 2px solid gray;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.updateSection {
+  padding: 30px;
+  display: inline-block;
+}
+.addSection {
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 2px;
+  display: inline-block;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.addInputTextField {
+  margin: 10px;
+}
+
+.optionArea {
+  margin: 10px;
+  width: 400px;
+  display: inline-block;
+}
+.clientNameInput {
+  display: block;
+}
+.buttonUpdate {
+  margin-right: 0;
+  float: right;
+  position: relative;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100px;
+}
+.buttonUpdate:hover {
+  background-color: pink;
+}

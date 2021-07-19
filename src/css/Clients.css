@@ -1,0 +1,44 @@
+.clientsTable {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+table {
+  border: 1px solid black;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 90%;
+}
+.backNextField {
+  background-color: grey;
+  display: inline-block;
+  float: right;
+  margin-top: 10px;
+  color: aliceblue;
+  padding: 10px;
+  margin-right: 10px;
+}
+.inputArea {
+  display: inline-block;
+  margin-left: 36px;
+  margin-top: 9px;
+}
+.backArrow {
+  background-color: black;
+  border-radius: 20%;
+  margin: 3px;
+  cursor: pointer;
+}
+.nextArrow {
+  background-color: black;
+  border-radius: 20%;
+  margin: 3px;
+  cursor: pointer;
+}
+.select {
+  margin-bottom: 0px;
+  display: inline-block;
+  margin-top: 26px;
+  margin-left: 31px;
+}
