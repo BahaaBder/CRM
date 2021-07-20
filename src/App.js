@@ -21,4 +21,4 @@ class App extends Component {
   }
 }
 
-export default inject("GlobalStore")(observer(App));
+export default inject("ClientsStoring")(observer(App));

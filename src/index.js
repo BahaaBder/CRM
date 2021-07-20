@@ -4,9 +4,9 @@ import "./index.css";
 import App from "./App";
 import { Provider } from "mobx-react";
 import reportWebVitals from "./reportWebVitals";
-import CustomersStore from "./stores/CustomersStore";
-let GlobalStore = new CustomersStore();
-let stores = { GlobalStore };
+import ClientsStore from "./stores/ClientsStore";
+let ClientsStoring = new ClientsStore();
+let stores = { ClientsStoring };
 ReactDOM.render(
   <Provider {...stores}>
     <App />

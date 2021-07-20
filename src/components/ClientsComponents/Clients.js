@@ -4,10 +4,9 @@ import TextField from "@material-ui/core/TextField";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import TableHeaders from "./TableHeaders";
-import TableRow from "./TableRow";
+import ClientRow from "./ClientRow";
 import "../../css/Clients.css";
 const axios = require("axios");
-
 class Clients extends Component {
   constructor() {
     super();
@@ -17,7 +16,7 @@ class Clients extends Component {
       input: "",
     };
   }
-  async componentDidMount() {
+  componentDidMount() {
     axios.get("http://localhost:8080/clients?from=0&to=10").then((response) => {
       this.setState({ clients: response.data });
     });
@@ -58,10 +57,7 @@ class Clients extends Component {
           <TextField id="standard-basic" label="Search" />
           <div className="select">
             <select>
-              <option value="volvo">Volvo</option>
-              <option value="saab">Saab</option>
-              <option value="mercedes">Mercedes</option>
-              <option value="audi">Audi</option>
+              <option value="volvo">A</option>
             </select>
           </div>
         </div>
@@ -74,7 +70,7 @@ class Clients extends Component {
           <table>
             <TableHeaders />
             {this.state.clients.map((client) => {
-              return <TableRow client={client} />;
+              return <ClientRow client={client} />;
             })}
           </table>
         </div>
@@ -83,4 +79,4 @@ class Clients extends Component {
   }
 }
 
-export default inject("GlobalStore")(observer(Clients));
+export default inject("ClientsStoring")(observer(Clients));

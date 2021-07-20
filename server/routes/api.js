@@ -118,6 +118,29 @@ router.put("/sendemail", function (req, res) {
   res.send("success");
 });
 
+router.put("/updateclient", async function (req, res) {
+  let oldFirstName = req.body.oldData.oldfirstName;
+  let oldLastName = req.body.oldData.oldsurName;
+  let oldCountry = req.body.oldData.oldcountry;
+  let newFirstName = req.body.newName;
+  let newLastName = req.body.newSurName;
+  let newCountry = req.body.newCountry;
+  // console.log(req.body);
+  let resultsOld = await sequelize.query(
+    `SELECT id FROM country WHERE country='${oldCountry}'`
+  );
+  let oldCountryId = resultsOld[0][0].id;
+
+  let resultsNew = await sequelize.query(
+    `SELECT id FROM country WHERE country='${newCountry}'`
+  );
+  let newCountryId = resultsNew[0][0].id;
+  console.log("_____________", oldCountryId, newCountryId);
+  sequelize.query(`UPDATE client
+   SET first='${newFirstName}',last='${newLastName}',country_id='${newCountryId}'
+   WHERE first='${oldFirstName}' AND last='${oldLastName}' AND country_id='${oldCountryId}'
+   `);
+});
 router.post("/clientSave", async function (req, res) {
   let clientData = req.body;
   try {

@@ -18,35 +18,35 @@ class Update extends Component {
     this.sendRequest(this.state.email_type, this.state.clientNameInput);
   };
 
+  transferClick = () => {
+    this.transferRequest(this.state.owner, this.state.clientNameInput);
+  };
+
   sendRequest = (email_type, clientName) => {
     axios.put(
       SEND_EMAIL + "/?" + "email=" + email_type + "&name=" + clientName
     );
   };
 
-  transferClick = () => {
-    this.transferRequest(this.state.owner, this.state.clientNameInput);
-  };
-
   transferRequest = (owner, clientName) => {
     axios.put(UPDATE_CLIENT + "/?" + "owner=" + owner + "&name=" + clientName);
   };
 
-  handelRequest = (event) => {
+  handleInputClientName = (event) => {
     this.setState({ clientNameInput: event.target.value });
   };
 
-  handleSelect = (event) => {
+  handleSelectOwner = (event) => {
     this.setState({ owner: event.target.value });
   };
 
-  handleSelectType = (event) => {
+  handleSelectEmailType = (event) => {
     this.setState({ email_type: event.target.value });
   };
 
   componentDidMount() {
     axios.get("http://localhost:8080/owners").then((response) => {
-      this.props.GlobalStore.setOwners(response.data);
+      this.props.ClientsStoring.setOwners(response.data);
     });
   }
   render() {
@@ -56,7 +56,7 @@ class Update extends Component {
         Client Name :{" "}
         <input
           type="text"
-          onChange={this.handelRequest}
+          onChange={this.handleInputClientName}
           className="clientNameInput"
           value={this.state.clientNameInput}
         />
@@ -64,7 +64,7 @@ class Update extends Component {
           Transfer ownership to :{" "}
           <select
             className="selectUpdate"
-            onChange={this.handleSelect}
+            onChange={this.handleSelectOwner}
             value={this.state.owner}
           >
             {this.props.GlobalStore.owners.map((o, index) => {
@@ -81,7 +81,10 @@ class Update extends Component {
         </div>
         <div className="optionArea">
           Send Email :{" "}
-          <select className="selectUpdate" onChange={this.handleSelectType}>
+          <select
+            className="selectUpdate"
+            onChange={this.handleSelectEmailType}
+          >
             <option value="A">A</option>
             <option value="B">B</option>
             <option value="C">C</option>
@@ -98,4 +101,4 @@ class Update extends Component {
     );
   }
 }
-export default inject("GlobalStore")(observer(Update));
+export default inject("ClientsStoring")(observer(Update));

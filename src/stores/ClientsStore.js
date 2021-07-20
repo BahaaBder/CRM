@@ -1,6 +1,6 @@
 import { observable, action, makeObservable } from "mobx";
 const customers = require("./data.json");
-export default class CustomersStore {
+export default class ClientsStore {
   constructor() {
     this.data = [];
     this.owners = [];
@@ -10,9 +10,7 @@ export default class CustomersStore {
       setOwners: action,
     });
   }
-  loadData = () => {
-    this.data = customers;
-  };
+
   setOwners = (a) => {
     this.owners = a;
   };
