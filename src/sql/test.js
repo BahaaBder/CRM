@@ -3,8 +3,12 @@ const sequelize = new Sequelize("mysql://root:@localhost/sql_crm");
 
 async function show() {
   let results = await sequelize.query(
-    `SELECT id FROM country WHERE country="Armenia"`
+    `SELECT a.country,MAX(total) FROM
+    (SELECT country,count(*) as total  
+    FROM country,client 
+    WHERE client.country_id=country.id AND client.sold=1  
+    GROUP BY country ) as a`
   );
-  console.log(results[0][0].id);
+  console.log(results[0][0].country);
 }
 show();
