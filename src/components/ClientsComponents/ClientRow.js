@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../../css/TableHeaders.css";
+import "../../css/Table.css";
 import Modal from "react-modal";
 const axios = require("axios");
 const UPDATE_CLIENT_DATA = "http://localhost:8080/updateclient";
@@ -20,15 +20,14 @@ export default class ClientRow extends Component {
   };
 
   handleRequest = () => {
+    this.setState({ openModal: false });
     let updateInformationObject = {
       oldData: this.oldData,
       newName: this.state.firstName,
       newSurName: this.state.surName,
       newCountry: this.state.country,
     };
-    axios
-      .put(UPDATE_CLIENT_DATA, updateInformationObject)
-      .then(() => this.setState({ openModal: false }));
+    axios.put(UPDATE_CLIENT_DATA, updateInformationObject);
   };
 
   fillData = () => {
@@ -45,12 +44,16 @@ export default class ClientRow extends Component {
   };
 
   handleChange = (event) => {
-    console.log("handleChange");
     this.setState({ [event.target.name]: event.target.value });
   };
 
   closeModal = () => {
-    this.setState({ openModal: false });
+    this.setState({
+      openModal: false,
+      firstName: this.oldData.oldfirstName,
+      surName: this.oldData.oldsurName,
+      country: this.oldData.oldcountry,
+    });
   };
 
   render() {
@@ -60,9 +63,9 @@ export default class ClientRow extends Component {
         className="tableRows"
         onClick={() => this.setState({ openModal: true })}
       >
-        <td>{client.first}</td>
-        <td>{client.last}</td>
-        <td>{client.country}</td>
+        <td>{this.state.firstName}</td>
+        <td>{this.state.surName}</td>
+        <td>{this.state.country}</td>
         <td>{client.date}</td>
         <td>{client.email_type}</td>
         <td>{client.sold}</td>
@@ -87,9 +90,11 @@ export default class ClientRow extends Component {
             },
           }}
         >
-          <div onClickCapture={this.closeModal}>X</div>
+          <div onClickCapture={this.closeModal} className="exitButton">
+            X
+          </div>
           <h1>Update User</h1>
-          <div>
+          <div className="userInput">
             Name:{" "}
             <input
               type="text"
@@ -98,7 +103,7 @@ export default class ClientRow extends Component {
               value={this.state.firstName}
             />
           </div>
-          <div>
+          <div className="userInput">
             SurName:{" "}
             <input
               type="text"
@@ -107,7 +112,7 @@ export default class ClientRow extends Component {
               value={this.state.surName}
             />
           </div>
-          <div>
+          <div className="userInput">
             Country:{" "}
             <input
               type="text"
@@ -116,7 +121,9 @@ export default class ClientRow extends Component {
               value={this.state.country}
             />
           </div>
-          <button onClickCapture={this.handleRequest}>Update</button>
+          <button onClickCapture={this.handleRequest} className="updateButton">
+            Update
+          </button>
         </Modal>
       </tr>
     );

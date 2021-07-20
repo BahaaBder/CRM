@@ -10,15 +10,10 @@ const axios = require("axios");
 class Clients extends Component {
   constructor() {
     super();
-    this.state = {
-      clients: [],
-      currentPage: 0,
-      input: "",
-    };
   }
   componentDidMount() {
     axios.get("http://localhost:8080/clients?from=0&to=10").then((response) => {
-      this.setState({ clients: response.data });
+      this.props.ClientsStoring.setClients(response.data);
     });
   }
   requestHandle = (from, to, updateState) => {
@@ -28,24 +23,23 @@ class Clients extends Component {
         http://localhost:8080/clients?from=${from}&to=${to}`
       )
       .then((response) => {
-        this.setState({
-          clients: response.data,
-          currentPage: this.state.currentPage + updateState,
-        });
-        console.log(response.data);
+        this.props.ClientsStoring.setClientsPerPage(
+          response.data,
+          this.props.ClientsStoring.currentPage + updateState
+        );
       });
   };
   nextClick = () => {
     this.requestHandle(
-      (this.state.currentPage + 1) * 10,
-      (this.state.currentPage + 1) * 10 + 10,
+      (this.props.ClientsStoring.currentPage + 1) * 10,
+      (this.props.ClientsStoring.currentPage + 1) * 10 + 10,
       1
     );
   };
   backClick = () => {
     this.requestHandle(
-      (this.state.currentPage - 1) * 10,
-      (this.state.currentPage - 1) * 10 + 10,
+      (this.props.ClientsStoring.currentPage - 1) * 10,
+      (this.props.ClientsStoring.currentPage - 1) * 10 + 10,
       -1
     );
   };
@@ -63,13 +57,13 @@ class Clients extends Component {
         </div>
         <div className="backNextField">
           <ArrowBackIosIcon className="backArrow" onClick={this.backClick} />
-          <span>{this.state.currentPage}</span>-<span>41</span>
+          <span>{this.props.ClientsStoring.currentPage}</span>-<span>41</span>
           <ArrowForwardIosIcon className="nextArrow" onClick={this.nextClick} />
         </div>
         <div className="clientsTable">
           <table>
             <TableHeaders />
-            {this.state.clients.map((client) => {
+            {this.props.ClientsStoring.clients.map((client) => {
               return <ClientRow client={client} />;
             })}
           </table>

@@ -4,6 +4,7 @@ import { inject, observer } from "mobx-react";
 import "../../css/Actions.css";
 const UPDATE_CLIENT = "http://localhost:8080/client";
 const SEND_EMAIL = "http://localhost:8080/sendemail";
+const UPDATE_SALE = "http://localhost:8080/updatesale";
 class Update extends Component {
   constructor() {
     super();
@@ -44,6 +45,9 @@ class Update extends Component {
     this.setState({ email_type: event.target.value });
   };
 
+  handleDeclareSale = () => {
+    axios.put(UPDATE_SALE, { clientName: this.state.clientNameInput });
+  };
   componentDidMount() {
     axios.get("http://localhost:8080/owners").then((response) => {
       this.props.ClientsStoring.setOwners(response.data);
@@ -67,7 +71,7 @@ class Update extends Component {
             onChange={this.handleSelectOwner}
             value={this.state.owner}
           >
-            {this.props.GlobalStore.owners.map((o, index) => {
+            {this.props.ClientsStoring.owners.map((o, index) => {
               return (
                 <option key={index} value={o.owner}>
                   {o.owner}
@@ -95,7 +99,10 @@ class Update extends Component {
           </button>
         </div>
         <div className="optionArea">
-          Declare Sale ! <button className="buttonUpdate">Declare</button>
+          Declare Sale !{" "}
+          <button className="buttonUpdate" onClick={this.handleDeclareSale}>
+            Declare
+          </button>
         </div>
       </div>
     );

@@ -72,10 +72,18 @@ router.get("/allClients", function (req, res) {
     });
 });
 
-router.get("/mostSales", function (req, res) {
-  sequelize.query(`SELECT co.country FROM client as c,country as co
-  WHERE c.country_id=co.id
-  `);
+router.get("/mostcountrysales", function (req, res) {
+  sequelize
+    .query(
+      `SELECT a.country,MAX(total) FROM
+  (SELECT country,count(*) as total  
+  FROM country,client 
+  WHERE client.country_id=country.id AND client.sold=1  
+  GROUP BY country ) as a`
+    )
+    .then(function ([results, metadata]) {
+      res.send(results);
+    });
 });
 
 router.get("/salesByCountry", function (req, res) {
@@ -94,6 +102,13 @@ router.get("/owners", function (req, res) {
   sequelize.query(`SELECT * FROM owner`).then(function ([owners, metadata]) {
     res.send(owners);
   });
+});
+
+router.put("/updatesale", function (req, res) {
+  let clientName = req.body.clientName;
+  sequelize.query(`UPDATE client 
+  SET sold=1 
+  WHERE first=${clientName}`);
 });
 
 router.put("/client", function (req, res) {
@@ -135,7 +150,6 @@ router.put("/updateclient", async function (req, res) {
     `SELECT id FROM country WHERE country='${newCountry}'`
   );
   let newCountryId = resultsNew[0][0].id;
-  console.log("_____________", oldCountryId, newCountryId);
   sequelize.query(`UPDATE client
    SET first='${newFirstName}',last='${newLastName}',country_id='${newCountryId}'
    WHERE first='${oldFirstName}' AND last='${oldLastName}' AND country_id='${oldCountryId}'

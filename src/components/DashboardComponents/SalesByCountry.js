@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import "../../css/Charts.css";
 import {
   BarChart,
   CartesianGrid,
@@ -32,8 +32,8 @@ export default class SalesByCountry extends Component {
 
   render() {
     return (
-      <div>
-        <BarChart width={730} height={250} data={this.state.salesByCountry}>
+      <div className="chartComponent">
+        <BarChart width={600} height={250} data={this.state.salesByCountry}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="country" />
           <YAxis />

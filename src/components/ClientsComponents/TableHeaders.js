@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../../css/TableHeaders.css";
+import "../../css/Table.css";
 export default class TableHeaders extends Component {
   render() {
     return (

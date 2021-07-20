@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import "../../css/Charts.css";
 import {
   BarChart,
   CartesianGrid,
@@ -11,6 +11,7 @@ import {
 } from "recharts";
 const axios = require("axios");
 const TOP_OWNERS = "http://localhost:8080/topOwners";
+
 export default class TopEmployees extends Component {
   constructor() {
     super();
@@ -21,13 +22,12 @@ export default class TopEmployees extends Component {
   componentDidMount = () => {
     axios.get(TOP_OWNERS).then((response) => {
       this.setState({ topThreeOwners: response.data });
-      console.log(response.data);
     });
   };
 
   render() {
     return (
-      <div>
+      <div className="chartComponent">
         <BarChart
           width={600}
           height={300}
@@ -40,7 +40,13 @@ export default class TopEmployees extends Component {
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />
           <Legend />
-          <Bar dataKey="total" fill="#8884d8" />
+          <Bar
+            dataKey="total"
+            fill="#d63031"
+            stroke="#000000"
+            strokeWidth={1}
+            barSize={30}
+          />
         </BarChart>
       </div>
     );
