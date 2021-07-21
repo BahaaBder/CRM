@@ -49,11 +49,11 @@ router.get("/topOwners", function (req, res) {
   sequelize
     .query(
       `SELECT owner.owner,COUNT(*) AS total FROM client ,owner
-  WHERE client.owner_id=owner.id 
-  AND sold=1 
-  GROUP BY owner
-  ORDER BY  total desc
-  LIMIT 3`
+       WHERE client.owner_id=owner.id 
+       AND sold=1 
+       GROUP BY owner
+       ORDER BY  total desc
+       LIMIT 3`
     )
     .then(function ([results]) {
       res.send(results);
@@ -89,9 +89,12 @@ router.get("/mostcountrysales", function (req, res) {
 router.get("/salesByCountry", function (req, res) {
   sequelize
     .query(
-      `SELECT country,count(*) AS Sales FROM client AS c , country AS co
-  WHERE c.country_id=co.id AND sold=1
-  GROUP BY country `
+      `SELECT country,count(*) AS Sales 
+      FROM 
+      client AS c , country AS co
+     WHERE
+    c.country_id=co.id AND sold=1
+    GROUP BY country `
     )
     .then(function ([results]) {
       res.send(results);
@@ -155,33 +158,60 @@ router.put("/updateclient", async function (req, res) {
    WHERE first='${oldFirstName}' AND last='${oldLastName}' AND country_id='${oldCountryId}'
    `);
 });
-router.post("/clientSave", async function (req, res) {
-  let clientData = req.body;
-  try {
-    let countryIdQuery = `SELECT id FROM country WHERE country = '${clientData.countryName}'`;
-    let countryIdData = await sequelize.query(countryIdQuery);
-    let countryId = countryIdData[0][0].id;
-    let ownerIdQuery = `SELECT id FROM owner WHERE owner = '${clientData.ownerName}'`;
-    let ownerIdData = await sequelize.query(ownerIdQuery);
-    if (!ownerIdData[0][0]) {
-      let ownerIdQuery = `INSERT INTO owner VALUES(null,'${clientData.ownerName}')`;
-      ownerIdData = await sequelize.query(ownerIdQuery);
-    }
-    let ownerId = ownerIdData[0][0].id;
-    let date = new Date();
-    let strDate = "m/d/Y"
-      .replace("Y", date.getFullYear())
-      .replace("m", date.getMonth() + 1)
-      .replace("d", date.getDate());
-    let dataQuery = `INSERT INTO client (last,first,date,sold,owner_id,country_id)
-                       VALUES ('${clientData.lastName}','${
-      clientData.firstName
-    }','${strDate}',${0},${ownerId},${countryId})`;
-    let clientsData = await sequelize.query(dataQuery);
-    res.send("Update");
-  } catch (error) {
-    res.status(401).send(error.message);
-  }
-});
 
+router.post("/clientSave", async function (req, res) {
+  const newClient = req.body;
+  console.log(newClient);
+  try {
+    const countryId = await getCountryId(newClient.countryName);
+    const ownerId = await getOwnerId(newClient.ownerName);
+    await addNewClient(
+      newClient.firstName,
+      newClient.lastName,
+      ownerId,
+      countryId
+    );
+    res.send("succes");
+  } catch (error) {}
+});
+/////
+getCountryId = async (country) => {
+  let countryID = await sequelize.query(`
+SELECT c.id
+FROM 
+country as c
+WHERE 
+c.country='${country}'
+`);
+  return countryID[0][0].id;
+};
+getOwnerId = async (owner) => {
+  let OwnerID = await sequelize.query(
+    `SELECT id FROM owner WHERE owner = '${owner}'`
+  );
+  if (!OwnerID[0][0]) {
+    let ownerIdQuery = `INSERT INTO owner VALUES(null,'${owner}')`;
+    OwnerID = await sequelize.query(
+      `SELECT id FROM owner WHERE owner = '${owner}'`
+    );
+  }
+  return OwnerID[0][0].id;
+};
+getDate = () => {
+  let date = new Date();
+  let strDate = "m/d/Y"
+    .replace("Y", date.getFullYear())
+    .replace("m", date.getMonth() + 1)
+    .replace("d", date.getDate());
+  return strDate;
+};
+addNewClient = async (firstName, lastName, ownerId, countryId) => {
+  const strDate = getDate();
+  sequelize
+    .query(
+      `INSERT INTO client (last,first,date,sold,owner_id,country_id)
+  VALUES ('${lastName}','${firstName}','${strDate}',${0},${ownerId},${countryId})`
+    )
+    .then(function ([results, metadata]) {});
+};
 module.exports = router;

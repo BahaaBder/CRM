@@ -57,14 +57,17 @@ class Update extends Component {
     return (
       <div className="updateSection">
         <h3>Update</h3>
-        Client Name :{" "}
-        <input
-          type="text"
-          onChange={this.handleInputClientName}
-          className="clientNameInput"
-          value={this.state.clientNameInput}
-        />
-        <div className="optionArea">
+        <div className="updateForm">
+          Client Name :{" "}
+          <input
+            type="text"
+            onChange={this.handleInputClientName}
+            className="clientNameInput"
+            value={this.state.clientNameInput}
+          />
+        </div>
+
+        <div className="updateForm">
           Transfer ownership to :{" "}
           <select
             className="selectUpdate"
@@ -83,7 +86,7 @@ class Update extends Component {
             transfer
           </button>
         </div>
-        <div className="optionArea">
+        <div className="updateForm">
           Send Email :{" "}
           <select
             className="selectUpdate"
@@ -98,7 +101,7 @@ class Update extends Component {
             Send
           </button>
         </div>
-        <div className="optionArea">
+        <div className="updateForm">
           Declare Sale !{" "}
           <button className="buttonUpdate" onClick={this.handleDeclareSale}>
             Declare

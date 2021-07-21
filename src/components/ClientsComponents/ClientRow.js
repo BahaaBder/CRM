@@ -12,7 +12,6 @@ class ClientRow extends Component {
       firstName: "",
       surName: "",
       country: "",
-      // selectedCustomer:{},
     };
     this.oldData = {};
   }

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
+import Modal from "react-modal";
 import "../../css/Actions.css";
 import axios from "axios";
 const ADD_CLIENT = "http://localhost:8080/clientSave";
@@ -11,17 +12,23 @@ export default class Add extends Component {
       lastName: "",
       countryName: "",
       ownerName: "",
+      showMessageAddSucceful: false,
     };
   }
-  saveClient = () => {
+
+  saveClient = async () => {
     if (this.isValidInputs()) {
-      axios.post(ADD_CLIENT, this.state);
+      await axios.post(ADD_CLIENT, this.state);
+      this.setState({ showMessageAddSucceful: true });
     } else {
       alert("Check Your Inputs !!");
     }
   };
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
+  };
+  closeModal = () => {
+    this.setState({ showMessageAddSucceful: false });
   };
   isValidInputs = () => {
     if (
@@ -58,6 +65,29 @@ export default class Add extends Component {
         <Button variant="contained" color="secondary" onClick={this.saveClient}>
           Add New Client
         </Button>
+        <Modal
+          isOpen={this.state.showMessageAddSucceful}
+          onRequestClose={this.closeModal}
+          shouldCloseOnOverlayClick={false}
+          style={{
+            overlay: {
+              backgroundColor: "rgba(0,0,0,.7)",
+            },
+            content: {
+              color: "orange",
+              top: "50%",
+              left: "50%",
+              right: "auto",
+              bottom: "auto",
+              marginRight: "-50%",
+              transform: "translate(-50%, -50%)",
+              backgroundColor: "black",
+            },
+          }}
+        >
+          <div onClickCapture={this.closeModal}>X</div>
+          Add the client success
+        </Modal>
       </div>
     );
   }

@@ -21,7 +21,16 @@ USE sql_crm;
 -- FROM country,client 
 -- WHERE client.country_id=country.id AND client.sold=1  
 -- GROUP BY country ) as a
-UPDATE client
-     SET client.owner_id=(SELECT id FROM owner
-     WHERE owner.owner="Emily Durham")
-     WHERE client.first="Beach"
+
+
+-- UPDATE client
+--      SET client.owner_id=(SELECT id FROM owner
+--      WHERE owner.owner="Emily Durham")
+--      WHERE client.first="Beach"
+
+SELECT owner.owner,COUNT(*) AS total FROM client ,owner
+       WHERE client.owner_id=owner.id 
+       AND sold=1 
+       GROUP BY owner
+       ORDER BY  total desc
+       LIMIT 3
