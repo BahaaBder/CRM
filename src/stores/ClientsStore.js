@@ -14,10 +14,21 @@ export default class ClientsStore {
       setOwners: action,
       setClients: action,
       setClientsPerPage: action,
+      updateClient: action,
     });
   }
   setClients = (clients) => {
     this.clients = clients;
+  };
+
+  updateClient = (customerData) => {
+    this.clients.forEach((c) => {
+      if (c.id === customerData.id) {
+        c.first = customerData.first;
+        c.last = customerData.last;
+        c.country = customerData.country;
+      }
+    });
   };
 
   setClientsPerPage = (clients, currentPage) => {

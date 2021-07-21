@@ -16,8 +16,12 @@ USE sql_crm;
 -- WHERE client.country_id=country.id AND client.sold=1  
 --  GROUP BY country) AS T 
 
-SELECT a.country,MAX(total) FROM
-(SELECT country,count(*) as total  
-FROM country,client 
-WHERE client.country_id=country.id AND client.sold=1  
-GROUP BY country ) as a
+-- SELECT a.country,MAX(total) FROM
+-- (SELECT country,count(*) as total  
+-- FROM country,client 
+-- WHERE client.country_id=country.id AND client.sold=1  
+-- GROUP BY country ) as a
+UPDATE client
+     SET client.owner_id=(SELECT id FROM owner
+     WHERE owner.owner="Emily Durham")
+     WHERE client.first="Beach"

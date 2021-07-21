@@ -1,16 +1,17 @@
 .header {
   text-align: left;
   background-color: #262626;
-  height: 30px;
+  height: 50px;
 }
 .header-element {
   margin: 10px;
 }
 .header-element:hover {
   margin: 10px;
-  border-bottom: 2px solid red;
+  border-bottom: 5px solid red;
 }
 .navBarElement {
   text-decoration: none;
   color: white;
+  font-size: 25px;
 }

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import { inject, observer } from "mobx-react";
 import "../../css/Actions.css";
-const UPDATE_CLIENT = "http://localhost:8080/client";
+const UPDATE_OWNER = "http://localhost:8080/owner";
 const SEND_EMAIL = "http://localhost:8080/sendemail";
 const UPDATE_SALE = "http://localhost:8080/updatesale";
 class Update extends Component {
@@ -30,7 +30,7 @@ class Update extends Component {
   };
 
   transferRequest = (owner, clientName) => {
-    axios.put(UPDATE_CLIENT + "/?" + "owner=" + owner + "&name=" + clientName);
+    axios.put(UPDATE_OWNER + "/?" + "owner=" + owner + "&name=" + clientName);
   };
 
   handleInputClientName = (event) => {

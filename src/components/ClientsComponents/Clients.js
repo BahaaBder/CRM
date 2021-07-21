@@ -64,7 +64,7 @@ class Clients extends Component {
           <table>
             <TableHeaders />
             {this.props.ClientsStoring.clients.map((client) => {
-              return <ClientRow client={client} />;
+              return <ClientRow id={client.id} client={client} />;
             })}
           </table>
         </div>

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import "../../css/Table.css";
 import Modal from "react-modal";
+import { inject, observer } from "mobx-react";
 const axios = require("axios");
 const UPDATE_CLIENT_DATA = "http://localhost:8080/updateclient";
-export default class ClientRow extends Component {
+class ClientRow extends Component {
   constructor() {
     super();
     this.state = {
@@ -11,6 +12,7 @@ export default class ClientRow extends Component {
       firstName: "",
       surName: "",
       country: "",
+      // selectedCustomer:{},
     };
     this.oldData = {};
   }
@@ -27,7 +29,18 @@ export default class ClientRow extends Component {
       newSurName: this.state.surName,
       newCountry: this.state.country,
     };
-    axios.put(UPDATE_CLIENT_DATA, updateInformationObject);
+
+    ///
+    const customerToUpdate = {
+      id: this.props.id,
+      first: this.state.firstName,
+      last: this.state.surName,
+      country: this.state.country,
+    };
+    ///// check if the put work !!!!!
+    axios.put(UPDATE_CLIENT_DATA, updateInformationObject); //
+
+    this.props.ClientsStoring.updateClient(customerToUpdate);
   };
 
   fillData = () => {
@@ -63,9 +76,9 @@ export default class ClientRow extends Component {
         className="tableRows"
         onClick={() => this.setState({ openModal: true })}
       >
-        <td>{this.state.firstName}</td>
-        <td>{this.state.surName}</td>
-        <td>{this.state.country}</td>
+        <td>{client.first}</td>
+        <td>{client.last}</td>
+        <td>{client.country}</td>
         <td>{client.date}</td>
         <td>{client.email_type}</td>
         <td>{client.sold}</td>
@@ -129,3 +142,4 @@ export default class ClientRow extends Component {
     );
   }
 }
+export default inject("ClientsStoring")(observer(ClientRow));

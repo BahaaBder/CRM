@@ -111,7 +111,7 @@ router.put("/updatesale", function (req, res) {
   WHERE first=${clientName}`);
 });
 
-router.put("/client", function (req, res) {
+router.put("/owner", function (req, res) {
   sequelize.query(
     `UPDATE client
      SET client.owner_id=(SELECT id FROM owner
